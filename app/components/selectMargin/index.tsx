@@ -15,36 +15,39 @@ export default forwardRef(function SelectMargin(
     onConfirm,
     data,
     shouldPayMargin,
+    getContainer,
   }: {
+    /**
+     * 是否显示
+     */
     isShow: boolean;
+    /**
+     * 标题
+     */
     title: string;
     /**
      * 应付保证金
      */
     shouldPayMargin: string | number;
+    /**
+     * 账户数据
+     */
+    data: ApiTypes["market.service.getCreditAccountLimit"]["response"];
+    /**
+     * 确认
+     */
     onConfirm?: (data: any) => void;
+    /**
+     * 取消
+     */
     onCancel?: () => void;
-    data?: ApiTypes["market.service.getCreditAccountLimit"]["response"];
+    /**
+     * Modal 挂载位置
+     */
+    getContainer?: string | HTMLElement | (() => HTMLElement) | false;
   },
   ref
 ) {
-  // data!.profitLossAmount = -100
-  // if (data?.creditBalance) {
-  //   data.creditBalance = 0
-  //   data.creditReceiveOrderVOList = [
-  //     ...data.creditReceiveOrderVOList!,
-  //     ...data.creditReceiveOrderVOList!.map((i) => ({
-  //       ...i,
-  //       orderNo: i.orderNo + '1'
-  //     }))
-  //   ] as any
-  // }
-  // shouldPayMargin = '4999600'
-  // if (data?.creditBalance) {
-  //   data.creditBalance = 0
-  //   data.useBalance = 400
-  // }
-
   const [isSelectBalance, setIsSelectBalance] = useState(false);
 
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
@@ -237,6 +240,7 @@ export default forwardRef(function SelectMargin(
       cancelText="取消 "
       onOk={onSubmit}
       confirmLoading={confirmLoading}
+      getContainer={getContainer}
     >
       <div className="font-medium leading-none text-center text-14 text-c_level_2">
         应付保证金
@@ -362,6 +366,7 @@ export default forwardRef(function SelectMargin(
                 {data?.creditReceiveOrderVOList?.map((item) => (
                   <div
                     key={item.orderNo}
+                    data-orderno={item.orderNo}
                     className="flex items-center pr-3 border-b h-39 text-c_level_2"
                     style={{ borderColor: "#E6EAF2" }}
                   >
